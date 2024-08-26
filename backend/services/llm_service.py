@@ -1,6 +1,6 @@
 import openai
 from config import Config
-import os
+from backend.utils.mental_prompts import mental_system_prompt
 
 class LLMService:
     def __init__(self) -> None:
@@ -29,7 +29,7 @@ class GeminiSevice:
         genai.configure(api_key = Config.GEMINI_API_KEY)
         model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(
-            f"Empathize and provide mental health support based on the following: \n\n {text}",
+            f"{mental_system_prompt} Empathize and provide mental health support based on the following: \n\n {text}",
             generation_config=genai.types.GenerationConfig(temperature=0)
         )
 
