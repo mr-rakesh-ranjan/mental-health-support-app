@@ -1,4 +1,5 @@
 import openai
+from backend.models import UserInput
 from config import Config
 from backend.utils.mental_prompts import mental_system_prompt
 
@@ -23,13 +24,13 @@ class GeminiSevice:
     #     genai.configure(api_key = Config.GEMINI_API_KEY)
     
 
-    def get_gemini_response(self, text: str) -> str:
+    def get_gemini_response(self, user_input: UserInput) -> str:
         """Get response from Gemini model."""
         print("api -key -----> ", Config.GEMINI_API_KEY)
         genai.configure(api_key = Config.GEMINI_API_KEY)
         model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(
-            f"{mental_system_prompt} Empathize and provide mental health support based on the following: \n\n {text}",
+            f"Use this prompt {mental_system_prompt} to Empathize and provide mental health support based on the following: \n\n {user_input.user_query}. \n\n My current feeling is {user_input.feelings}. If any history is required then use this {user_input.history}",
             generation_config=genai.types.GenerationConfig(temperature=0)
         )
 

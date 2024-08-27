@@ -11,16 +11,16 @@ user_input = st.text_area("Describe your mental health concerns here...")
 
 if st.button("Submit"):
     if user_input:
-        response =  requests.post(API_URL, json={"text": user_input})
+        response =  requests.post(API_URL, json={"user_query": user_input, "feelings": "stressed"})
 
         if response.status_code == 200:
             result = response.json()
             st.subheader("Empathetic Response")
             st.write(result['llm_response'])
 
-            st.subheader("Coping strategies")
-            for strategy in result['coping_stratgies']:
-                st.write(f" - {strategy}")
+            # st.subheader("Coping strategies")
+            # for strategy in result['coping_stratgies']:
+            #     st.write(f" - {strategy}")
         else:
             st.error("Error in processing the request. Please try again.")
     else:
