@@ -5,3 +5,7 @@ class UserInput(BaseModel):
     user_query: str
     feelings: str | None = None
     history: str | None = None
+
+class CopingInput(BaseModel):
+    category :str
+    subcategory: str

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
-from backend.models import UserInput
+from backend.models import CopingInput, UserInput
+from backend.services.coping_strategies_service import get_coping_strategies_by_LLM
 from backend.services.llm_service import GeminiSevice
 from backend.services.strategies_service import CopingStrategiesService
 
@@ -27,4 +28,16 @@ async def analyze_input(user_input: UserInput):
 async def get_professional_resources():
     # call the coping strategies service to get the professional resources
     return coping_service.get_professional_resources()
+
+
+# 2.for coping strategies
+@app.post("/coping-strategies")
+async def get_coping_strategies(coping_input: CopingInput):
+    # call the coping strategies service to get the coping strategies
+    strategies = get_coping_strategies_by_LLM(coping_input.category, coping_input.subcategory)
+    print("Coping strategies -----------------> ", strategies)
+    return {
+        "coping_strategies": strategies
+    }
+
 
