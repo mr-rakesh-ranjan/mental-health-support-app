@@ -1,3 +1,5 @@
+import csv
+from fastapi import HTTPException
 import google.generativeai as genai
 
 from config import Config
@@ -50,3 +52,19 @@ def get_coping_strategies_by_LLM(category, subcategory):
     )
 
     return response.text
+
+def read_csv_file():
+    """
+    Reads the CSV file and returns its content as a list of dictionaries.
+    """
+    data = []
+    try:
+        with open('././professional_help.csv', mode='r', newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                data.append(row)
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="CSV file not found.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reading CSV file: {e}")
+    return data

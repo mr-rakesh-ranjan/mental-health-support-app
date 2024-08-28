@@ -1,9 +1,13 @@
 from fastapi import FastAPI
 
 from backend.models import CopingInput, UserInput
-from backend.services.coping_strategies_service import get_coping_strategies_by_LLM
+from backend.services.coping_strategies_service import get_coping_strategies_by_LLM, read_csv_file
 from backend.services.llm_service import GeminiSevice
 from backend.services.strategies_service import CopingStrategiesService
+
+from fastapi import FastAPI, HTTPException, Query
+from typing import List, Optional
+import csv
 
 app = FastAPI()
 
@@ -40,4 +44,21 @@ async def get_coping_strategies(coping_input: CopingInput):
         "coping_strategies": strategies
     }
 
+@app.get("/professional-help", summary="Get professional help details based on mental health category")
+async def get_professional_help(category: Optional[str] = Query(None, description="Mental health category to search for")):
+    """
+    Fetch professional help details based on the specified mental health category, or return all records if no category is specified.
+    """
+    data = read_csv_file()
 
+    if category:
+        # Filter data based on the category (case-insensitive match)
+        results = [row for row in data if row['MentalHealthCategory'].strip().lower() == category.strip().lower()]
+    else:
+        # Return all records if no category is specified
+        results = data
+
+    if not results:
+        raise HTTPException(status_code=404, detail="No professional help found for the specified criteria.")
+
+    return results
