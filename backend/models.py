@@ -9,3 +9,6 @@ class UserInput(BaseModel):
 class CopingInput(BaseModel):
     category :str
     subcategory: str
+
+class ConversationData(BaseModel):
+    conversation_data: list

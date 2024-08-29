@@ -1,6 +1,7 @@
 import csv
 from fastapi import HTTPException
 import google.generativeai as genai
+from backend.services.llm_service import GeminiSevice
 
 from config import Config
 
@@ -40,18 +41,16 @@ category = [
         ]
     },
 ]
+# safety measures for gemini LLM
+
+llm_service = GeminiSevice()
 
 def get_coping_strategies_by_LLM(category, subcategory):
     # This is a placeholder function. You would replace this with your actual LLM model
     # For demonstration purposes, we'll just return a random list of coping strategies
-    genai.configure(api_key = Config.GEMINI_API_KEY)
-    model = genai.GenerativeModel('gemini-pro')
-    response = model.generate_content(
-        f"Please identify the best coping strategies for users in the [Mental Health Category] {category}, specifically under the {subcategory} area. Consider evidence-based approaches, and tailor the recommendations to be practical and user-friendly. For each strategy, provide a brief explanation, its intended outcome, and a step-by-step guide on how to implement it in daily life",
-        generation_config=genai.types.GenerationConfig(temperature=0)
-    )
-
-    return response.text
+    user_prompt = f"Give simple, evidence-based coping strategies for {category} under {subcategory}. Briefly explain each strategy and its goal with easy steps to follow. Make response as much as sorter."
+    response = llm_service.generate_response_gemini(custom_prompt=user_prompt)
+    return response
 
 def read_csv_file():
     """
