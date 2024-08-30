@@ -18,6 +18,7 @@ def get_mental_health_report(conversation_data):
         {
             "primary_emotions": {
                 "sadness": integer type range 1 to 100,
+                ...
             },
             "sentiment_trends": {
                 "start": range 1 to 10,
@@ -25,20 +26,12 @@ def get_mental_health_report(conversation_data):
                 "end":  range 1 to 10
             },
             "emotional_intensity":  range 1 to 10,
-            "mental_health_topics": [
-                {
-                    "stress":  range 1 to 10
-                },
-                {
-                    "loneliness":  range 1 to 10
-                },
-                {
-                    "anxiety":  range 1 to 10
-                },
-                {
-                    "depression":  range 1 to 10
-                }
-            ]
+            "mental_health_topics": {
+                "stress":  range 1 to 10,
+                "loneliness":  range 1 to 10,
+                "anxiety":  range 1 to 10,
+                "depression":  range 1 to 10
+            }
         }
     """
     prompt2 = f"""
