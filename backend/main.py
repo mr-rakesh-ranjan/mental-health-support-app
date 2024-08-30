@@ -27,10 +27,10 @@ async def analyze_input(user_input: UserInput):
         "llm_response" : response,        
     }
 
-@app.get("/resources")
-async def get_professional_resources():
+@app.get("/emergency-assistance")
+async def get_emergency_assistance():
     # call the coping strategies service to get the professional resources
-    return coping_service.get_professional_resources()
+    return coping_service.get_emergency_assistance()
 
 
 # 2.for coping strategies

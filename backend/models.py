@@ -4,7 +4,7 @@ from pydantic import BaseModel
 class UserInput(BaseModel):
     user_query: str
     feelings: str | None = None
-    history: str | None = None
+    history: list | None = None
 
 class CopingInput(BaseModel):
     category :str
