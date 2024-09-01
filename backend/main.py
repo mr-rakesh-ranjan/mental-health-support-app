@@ -5,7 +5,7 @@ from backend.services.coping_strategies_service import get_coping_strategies_by_
 from backend.services.generate_report_service import generate_combined_graphs, generate_graphs, get_mental_health_report
 from backend.services.llm_service import GeminiSevice
 from backend.services.strategies_service import CopingStrategiesService
-from backend.utils.mental_prompts import mental_system_prompt
+from backend.mental_prompts import mental_system_prompt
 
 from fastapi import FastAPI, HTTPException, Query
 from typing import List, Optional
@@ -20,7 +20,7 @@ coping_service = CopingStrategiesService()
 @app.post("/analyze")
 async def analyze_input(user_input: UserInput):
     # call the LLM service to get the response
-    user_prompt = f"Use this prompt {mental_system_prompt} to Empathize and provide mental health support based on the following: \n\n {user_input.user_query}. \n\n My current feeling is {user_input.feelings}. If any history is required then use this {user_input.history}"
+    user_prompt = f"Use this prompt {mental_system_prompt} to Empathize and provide mental health support based on the following: \n\n {user_input.user_query}. \n\n The current feeling of user is {user_input.feelings} but dont mention this in your response. If any history is required then use this {user_input.history}"
     response = llm_service.generate_response_gemini(custom_prompt=user_prompt)
     # print("1: ---->", response) # for debugging onnly
     return {

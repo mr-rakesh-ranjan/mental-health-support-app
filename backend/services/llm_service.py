@@ -1,7 +1,7 @@
 import openai
 from backend.models import UserInput
 from config import Config
-from backend.utils.mental_prompts import mental_system_prompt
+from backend.mental_prompts import mental_system_prompt
 
 class LLMService:
     def __init__(self) -> None:
