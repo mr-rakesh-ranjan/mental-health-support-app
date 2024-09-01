@@ -20,7 +20,7 @@ coping_service = CopingStrategiesService()
 @app.post("/analyze")
 async def analyze_input(user_input: UserInput):
     # call the LLM service to get the response
-    user_prompt = f"Use this prompt {mental_system_prompt} to Empathize and provide mental health support based on the following: \n\n {user_input.user_query}. \n\n The current feeling of user is {user_input.feelings} but dont mention this in your greet back response. If any history is required then use this {user_input.history}"
+    user_prompt = f"Use this prompt {mental_system_prompt} to Empathize and provide mental health support based on the following: \n\n {user_input.user_query}. \n\n The current feeling of user is {user_input.feelings} but dont mention this in your response. If any history is required then use this {user_input.history}"
     response = llm_service.generate_response_gemini(custom_prompt=user_prompt)
     # print("1: ---->", response) # for debugging onnly
     return {
