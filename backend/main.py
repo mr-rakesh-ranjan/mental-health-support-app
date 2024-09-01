@@ -5,7 +5,7 @@ from backend.services.coping_strategies_service import get_coping_strategies_by_
 from backend.services.generate_report_service import generate_combined_graphs, generate_graphs, get_mental_health_report
 from backend.services.llm_service import GeminiSevice
 from backend.services.strategies_service import CopingStrategiesService
-from backend.utils.mental_prompts import mental_system_prompt
+from backend.mental_prompts import mental_system_prompt
 
 from fastapi import FastAPI, HTTPException, Query
 from typing import List, Optional
