@@ -7,6 +7,7 @@ from backend.services.llm_service import GeminiSevice
 from backend.services.strategies_service import CopingStrategiesService
 from backend.utils.mental_prompts import mental_system_prompt
 
+
 from fastapi import FastAPI, HTTPException, Query
 from typing import List, Optional
 import csv
@@ -17,10 +18,24 @@ app = FastAPI()
 llm_service = GeminiSevice()
 coping_service = CopingStrategiesService()
 
+def get_professional_data():
+    with open('./professional_help.csv', newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        return [row for row in reader]
+    
+emergency_data = coping_service.get_emergency_assistance()
+professional_help_data = get_professional_data()
+
+print("prof ---> ", professional_help_data, "\n\n eme_data -----> ", emergency_data )
+
+
 @app.post("/analyze")
 async def analyze_input(user_input: UserInput):
     # call the LLM service to get the response
-    user_prompt = f"Use this prompt {mental_system_prompt} to Empathize and provide mental health support based on the following: \n\n {user_input.user_query}. \n\n My current feeling is {user_input.feelings}. If any history is required then use this {user_input.history}"
+    user_query = user_input.user_query
+    feelings = user_input.feelings
+    history = user_input.history
+    user_prompt = f"Use this prompt {mental_system_prompt} to Empathize and provide mental health support based on the following: \n\n {user_query}. \n\n My current feeling is {feelings}. If any history is required then use this {history}. If user asked any query regarding 'professional help' use {professional_help_data} and for 'emergency assistance use {emergency_data} "
     response = llm_service.generate_response_gemini(custom_prompt=user_prompt)
     # print("1: ---->", response) # for debugging onnly
     return {
